@@ -63,8 +63,6 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const tealDark = Color(0xFF00796B);
-    const tealMedium = Color(0xFF009688);
     const primaryYellow = Color(0xFFF1B722);
     const textTeal = Color(0xFF004D40);
 
