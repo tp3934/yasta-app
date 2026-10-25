@@ -32,14 +32,11 @@ jobs:
       - name: Ensure Android Project Scaffolding
         run: |
           if [ ! -d "android" ]; then
-            flutter create --platforms=android --org=com.yasta.app .
+            flutter create --project-name=yasta_app --platforms=android --org=com.yasta.app .
           fi
 
       - name: Get Dependencies
         run: flutter pub get
-
-      - name: Analyze Project
-        run: flutter analyze --no-fatal-infos || true
 
       - name: Build APK (Release)
         run: flutter build apk --release
