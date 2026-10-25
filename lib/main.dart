@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'screens/login_pin_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(const YastaApp());
 }
 
@@ -14,11 +22,7 @@ class YastaApp extends StatelessWidget {
       title: 'Yasta',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF009688),
-          primary: const Color(0xFF00897B),
-        ),
+        fontFamily: 'Flexo',
         useMaterial3: true,
       ),
       home: const LoginPinScreen(userPhone: '68763153'),

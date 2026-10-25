@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPinScreen extends StatefulWidget {
   final String userPhone;
@@ -36,7 +37,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
   void _onBiometricPressed() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Autenticación biométrica no configurada'),
+        content: Text('Autenticación biométrica'),
         duration: Duration(seconds: 1),
       ),
     );
@@ -46,8 +47,8 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
     if (_pin.length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Por favor ingresa tu contraseña completa'),
-          backgroundColor: Colors.redAccent,
+          content: Text('Ingresa tu contraseña completa'),
+          backgroundColor: Color(0xFFE53935),
         ),
       );
       return;
@@ -55,128 +56,134 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Iniciando sesión con PIN: $_pin'),
-        backgroundColor: const Color(0xFF00897B),
+        content: Text('PIN ingresado: $_pin'),
+        backgroundColor: const Color(0xFF0F9B92),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    const primaryYellow = Color(0xFFF1B722);
-    const textTeal = Color(0xFF004D40);
+    final size = MediaQuery.of(context).size;
+    final topPadding = MediaQuery.of(context).padding.top;
+
+    // Colores extraídos de la ingeniería inversa del APK
+    const bgGradientStart = Color(0xFF068186);
+    const bgGradientEnd = Color(0xFF0F9B92);
+    const yellowPrimary = Color(0xFFF1C435);
+    const textTeal = Color(0xFF104B53);
+    const keypadNumColor = Color(0xFF3A6971);
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Fondo degradado superior
+          // 1. Fondo degradado turquesa / esmeralda superior
           Container(
-            height: MediaQuery.of(context).size.height * 0.42,
+            height: size.height * 0.44,
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF008374), Color(0xFF00A896)],
+                colors: [bgGradientStart, bgGradientEnd],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: SafeArea(
-              bottom: false,
-              child: Column(
-                children: [
-                  // Barra superior con ayuda
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withOpacity(0.6), width: 1.5),
-                        ),
-                        padding: const EdgeInsets.all(6),
-                        child: const Icon(
-                          Icons.help_outline,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
+            child: Stack(
+              children: [
+                // Textura sutil original de Yasta en el header si existe
+                Positioned.fill(
+                  child: Opacity(
+                    opacity: 0.08,
+                    child: SvgPicture.asset(
+                      'assets/assets/images/texture.svg',
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
+                ),
 
-                  // Logo Yasta estilizado
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                // Contenido del header
+                SafeArea(
+                  bottom: false,
+                  child: Column(
                     children: [
-                      // V/Y icono estilizado
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(width: 2, height: 6, color: primaryYellow),
-                              const SizedBox(width: 3),
-                              Container(width: 2, height: 8, color: primaryYellow),
-                              const SizedBox(width: 3),
-                              Container(width: 2, height: 6, color: primaryYellow),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          const Text(
-                            'Y',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 42,
-                              fontWeight: FontWeight.w900,
-                              fontStyle: FontStyle.italic,
-                              height: 0.9,
+                      // Botón de ayuda (?) superior derecho
+                      Padding(
+                        padding: const EdgeInsets.only(right: 22.0, top: 4.0),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.55),
+                                  width: 1.4,
+                                ),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '?',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Flexo',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
+
+                      // Logo original oficial de Yasta en SVG extraído
+                      SvgPicture.asset(
+                        'assets/assets/images/img_logo.svg',
+                        width: 96,
+                        height: 72,
+                      ),
+                      const SizedBox(height: 14),
+
+                      // "Bienvenid@" con la tipografía Flexo y color original
                       const Text(
-                        'asta',
+                        'Bienvenid@',
                         style: TextStyle(
+                          color: yellowPrimary,
+                          fontSize: 22,
+                          fontFamily: 'Flexo',
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+
+                      // Teléfono del usuario
+                      Text(
+                        widget.userPhone,
+                        style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 38,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
+                          fontSize: 18,
+                          fontFamily: 'Flexo',
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.8,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 14),
-
-                  // Bienvenid@ y número
-                  const Text(
-                    'Bienvenid@',
-                    style: TextStyle(
-                      color: primaryYellow,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    widget.userPhone,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
-          // Contenedor blanco con curvas
+          // 2. Tarjeta blanca curvada inferior
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.28,
+            top: (size.height * 0.32) + (topPadding > 0 ? 0 : 10),
             left: 0,
             right: 0,
             bottom: 0,
@@ -184,88 +191,98 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+                  topLeft: Radius.circular(28),
+                  topRight: Radius.circular(28),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10,
-                    offset: Offset(0, -4),
+                    color: Color(0x1A000000),
+                    blurRadius: 12,
+                    offset: Offset(0, -3),
                   ),
                 ],
               ),
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Título
+                    // Texto: Ingresa tu contraseña
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Ingresa tu contraseña',
                         style: TextStyle(
                           color: textTeal,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontFamily: 'Quicksand',
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
 
-                    // Display de PIN con botón de alternar visibilidad
+                    // Display de PIN con iconos oficiales SVG de ojo
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Text(
                             _pin.isEmpty
-                              ? ''
-                              : (_obscurePin ? '●' * _pin.length : _pin),
+                                ? ''
+                                : (_obscurePin ? '●●●●●●'.substring(0, _pin.length) : _pin),
                             style: TextStyle(
-                              fontSize: _obscurePin ? 22 : 20,
-                              letterSpacing: 6,
+                              fontSize: _obscurePin ? 18 : 20,
+                              letterSpacing: _obscurePin ? 4.5 : 8.0,
                               color: textTeal,
-                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Quicksand',
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            _obscurePin
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                            color: Colors.grey.shade600,
-                          ),
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             setState(() {
                               _obscurePin = !_obscurePin;
                             });
                           },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: SvgPicture.asset(
+                              _obscurePin
+                                  ? 'assets/assets/images/eye_slash.svg'
+                                  : 'assets/assets/images/eye.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 2),
                     const Divider(
                       color: Color(0xFFCFD8DC),
-                      thickness: 1.2,
-                      height: 4,
+                      thickness: 1.0,
+                      height: 1,
                     ),
+                    const SizedBox(height: 22),
+
+                    // Teclado numérico circular con sombreado y elevación
+                    _buildKeypad(keypadNumColor),
                     const SizedBox(height: 24),
 
-                    // Teclado numérico
-                    _buildKeypad(textTeal),
-                    const SizedBox(height: 26),
-
-                    // Botón Iniciar sesión
+                    // Botón amarillo de acción "Iniciar sesión"
                     SizedBox(
                       width: double.infinity,
-                      height: 52,
+                      height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryYellow,
+                          backgroundColor: yellowPrimary,
+                          foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(26),
+                            borderRadius: BorderRadius.circular(24),
                           ),
                         ),
                         onPressed: _onLoginPressed,
@@ -273,51 +290,56 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                           'Iniciar sesión',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            fontFamily: 'Flexo',
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
 
-                    // ¿Olvidaste tu contraseña?
+                    // Enlace ¿Olvidaste tu contraseña?
                     GestureDetector(
-                      onTap: () {
-                        // Navegación para recuperación de contraseña
-                      },
+                      onTap: () {},
                       child: const Text(
                         '¿Olvidaste tu contraseña?',
                         style: TextStyle(
-                          color: Color(0xFF00796B),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          color: textTeal,
+                          fontSize: 13,
+                          fontFamily: 'Quicksand',
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 20),
 
-                    // Pie de página "Aplicación segura"
+                    // Pie "Aplicación segura"
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.verified_user_outlined,
-                          size: 16,
-                          color: Colors.grey.shade500,
+                        SvgPicture.asset(
+                          'assets/assets/images/warning.svg',
+                          width: 14,
+                          height: 14,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF90A4AE),
+                            BlendMode.srcIn,
+                          ),
                         ),
                         const SizedBox(width: 6),
-                        Text(
+                        const Text(
                           'Aplicación segura',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 11,
+                            color: Color(0xFF78909C),
+                            fontFamily: 'Quicksand',
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
@@ -328,27 +350,29 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
     );
   }
 
-  Widget _buildKeypad(Color textColor) {
+  Widget _buildKeypad(Color numColor) {
     return Column(
       children: [
-        _buildKeyRow(['1', '2', '3'], textColor),
-        const SizedBox(height: 16),
-        _buildKeyRow(['4', '5', '6'], textColor),
-        const SizedBox(height: 16),
-        _buildKeyRow(['7', '8', '9'], textColor),
-        const SizedBox(height: 16),
+        _buildRow(['1', '2', '3'], numColor),
+        const SizedBox(height: 14),
+        _buildRow(['4', '5', '6'], numColor),
+        const SizedBox(height: 14),
+        _buildRow(['7', '8', '9'], numColor),
+        const SizedBox(height: 14),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Botón huella dactilar
             _buildSpecialKey(
-              icon: Icons.fingerprint,
-              color: Colors.grey.shade400,
+              icon: Icons.fingerprint_rounded,
+              color: const Color(0xFFB0BEC5),
               onTap: _onBiometricPressed,
             ),
-            _buildNumberKey('0', textColor),
+            _buildKey('0', numColor),
+            // Botón borrar
             _buildSpecialKey(
               icon: Icons.backspace_outlined,
-              color: Colors.grey.shade400,
+              color: const Color(0xFFB0BEC5),
               onTap: _onBackspacePressed,
             ),
           ],
@@ -357,23 +381,23 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
     );
   }
 
-  Widget _buildKeyRow(List<String> values, Color textColor) {
+  Widget _buildRow(List<String> values, Color numColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: values.map((val) => _buildNumberKey(val, textColor)).toList(),
+      children: values.map((val) => _buildKey(val, numColor)).toList(),
     );
   }
 
-  Widget _buildNumberKey(String number, Color textColor) {
+  Widget _buildKey(String value, Color numColor) {
     return Container(
-      width: 68,
-      height: 68,
+      width: 62,
+      height: 62,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: const Color(0xFF000000).withOpacity(0.07),
             blurRadius: 8,
             spreadRadius: 1,
             offset: const Offset(0, 3),
@@ -383,15 +407,16 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(34),
-          onTap: () => _onNumberPressed(number),
+          borderRadius: BorderRadius.circular(31),
+          onTap: () => _onNumberPressed(value),
           child: Center(
             child: Text(
-              number,
+              value,
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: textColor,
+                fontSize: 22,
+                color: numColor,
+                fontFamily: 'Quicksand',
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -406,14 +431,14 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
     required VoidCallback onTap,
   }) {
     return Container(
-      width: 68,
-      height: 68,
+      width: 62,
+      height: 62,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: const Color(0xFF000000).withOpacity(0.04),
             blurRadius: 6,
             spreadRadius: 1,
             offset: const Offset(0, 2),
@@ -423,10 +448,10 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(34),
+          borderRadius: BorderRadius.circular(31),
           onTap: onTap,
           child: Center(
-            child: Icon(icon, color: color, size: 24),
+            child: Icon(icon, color: color, size: 22),
           ),
         ),
       ),
