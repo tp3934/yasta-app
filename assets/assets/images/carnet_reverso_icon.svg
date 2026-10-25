@@ -1,8 +1,0 @@
-<svg width="100%" height="100%" viewBox="190 60 300 200" role="img" xmlns="http://www.w3.org/2000/svg">
-    <title>Icono del reverso de un carnet de identidad</title>
-    <desc>Ilustración minimalista de una tarjeta de identificación vista por el reverso, con una franja de color en la parte superior y dos líneas horizontales debajo</desc>
-    <rect x="190" y="60" width="300" height="200" rx="20" fill="none" stroke="#14b8a6" stroke-width="8"/>
-    <rect x="190" y="100" width="300" height="45" fill="#14b8a6"/>
-    <rect x="220" y="180" width="240" height="10" rx="5" fill="#14b8a6"/>
-    <rect x="220" y="210" width="160" height="10" rx="5" fill="#14b8a6" opacity="0.5"/>
-</svg>

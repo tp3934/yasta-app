@@ -32,7 +32,8 @@ jobs:
       - name: Ensure Android Project Scaffolding
         run: |
           if [ ! -d "android" ]; then
-            flutter create --project-name=yasta_app --platforms=android --org=com.yasta.app .
+            flutter create --project-name=yalopago --platforms=android --org=com.yalopago.app .
+            sed -i 's/android:label="yalopago"/android:label="YaloPago"/' android/app/src/main/AndroidManifest.xml
           fi
 
       - name: Get Dependencies

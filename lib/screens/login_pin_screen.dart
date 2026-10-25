@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPinScreen extends StatefulWidget {
   final String userPhone;
@@ -67,18 +66,18 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
     final size = MediaQuery.of(context).size;
     final topPadding = MediaQuery.of(context).padding.top;
 
-    // Colores extraídos de la ingeniería inversa del APK
-    const bgGradientStart = Color(0xFF068186);
-    const bgGradientEnd = Color(0xFF0F9B92);
-    const yellowPrimary = Color(0xFFF1C435);
-    const textTeal = Color(0xFF104B53);
-    const keypadNumColor = Color(0xFF3A6971);
+    // Paleta propia de YaloPago
+    const bgGradientStart = Color(0xFF0B6E4F);
+    const bgGradientEnd = Color(0xFF2E9E6B);
+    const accentPrimary = Color(0xFFFF7A59);
+    const textDark = Color(0xFF1E1B2E);
+    const keypadNumColor = Color(0xFF4B5563);
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // 1. Fondo degradado turquesa / esmeralda superior
+          // 1. Fondo degradado superior
           Container(
             height: size.height * 0.44,
             width: double.infinity,
@@ -91,18 +90,6 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
             ),
             child: Stack(
               children: [
-                // Textura sutil original de Yasta en el header si existe
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: 0.08,
-                    child: SvgPicture.asset(
-                      'assets/assets/images/texture.svg',
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    ),
-                  ),
-                ),
-
                 // Contenido del header
                 SafeArea(
                   bottom: false,
@@ -132,7 +119,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
-                                    fontFamily: 'Flexo',
+                                    fontFamily: 'Quicksand',
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -142,21 +129,33 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                         ),
                       ),
 
-                      // Logo original oficial de Yasta en SVG extraído
-                      SvgPicture.asset(
-                        'assets/assets/images/img_logo.svg',
-                        width: 96,
-                        height: 72,
+                      // Logo propio de YaloPago
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.15),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.6),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.account_balance_wallet_rounded,
+                          color: Colors.white,
+                          size: 32,
+                        ),
                       ),
                       const SizedBox(height: 14),
 
-                      // "Bienvenid@" con la tipografía Flexo y color original
+                      // "Bienvenid@" con la tipografía y color propios
                       const Text(
                         'Bienvenid@',
                         style: TextStyle(
-                          color: yellowPrimary,
+                          color: accentPrimary,
                           fontSize: 22,
-                          fontFamily: 'Flexo',
+                          fontFamily: 'Quicksand',
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.2,
                         ),
@@ -169,7 +168,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
-                          fontFamily: 'Flexo',
+                          fontFamily: 'Quicksand',
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.8,
                         ),
@@ -214,7 +213,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                       child: Text(
                         'Ingresa tu contraseña',
                         style: TextStyle(
-                          color: textTeal,
+                          color: textDark,
                           fontSize: 15,
                           fontFamily: 'Quicksand',
                           fontWeight: FontWeight.w700,
@@ -223,7 +222,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                     ),
                     const SizedBox(height: 10),
 
-                    // Display de PIN con iconos oficiales SVG de ojo
+                    // Display de PIN con toggle de visibilidad
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -235,7 +234,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                             style: TextStyle(
                               fontSize: _obscurePin ? 18 : 20,
                               letterSpacing: _obscurePin ? 4.5 : 8.0,
-                              color: textTeal,
+                              color: textDark,
                               fontFamily: 'Quicksand',
                               fontWeight: FontWeight.w700,
                             ),
@@ -249,12 +248,12 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: SvgPicture.asset(
+                            child: Icon(
                               _obscurePin
-                                  ? 'assets/assets/images/eye_slash.svg'
-                                  : 'assets/assets/images/eye.svg',
-                              width: 24,
-                              height: 24,
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              size: 22,
+                              color: textDark.withOpacity(0.6),
                             ),
                           ),
                         ),
@@ -272,13 +271,13 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                     _buildKeypad(keypadNumColor),
                     const SizedBox(height: 24),
 
-                    // Botón amarillo de acción "Iniciar sesión"
+                    // Botón de acción "Iniciar sesión"
                     SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: yellowPrimary,
+                          backgroundColor: accentPrimary,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -291,7 +290,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
-                            fontFamily: 'Flexo',
+                            fontFamily: 'Quicksand',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -305,7 +304,7 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                       child: const Text(
                         '¿Olvidaste tu contraseña?',
                         style: TextStyle(
-                          color: textTeal,
+                          color: textDark,
                           fontSize: 13,
                           fontFamily: 'Quicksand',
                           fontWeight: FontWeight.w600,
@@ -318,14 +317,10 @@ class _LoginPinScreenState extends State<LoginPinScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                          'assets/assets/images/warning.svg',
-                          width: 14,
-                          height: 14,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF90A4AE),
-                            BlendMode.srcIn,
-                          ),
+                        const Icon(
+                          Icons.lock_outline_rounded,
+                          size: 14,
+                          color: Color(0xFF90A4AE),
                         ),
                         const SizedBox(width: 6),
                         const Text(

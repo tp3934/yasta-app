@@ -1,5 +1,5 @@
-name: yasta_app
-description: "A replica of Yasta login and financial application in Flutter"
+name: yalopago
+description: "YaloPago login screen prototype in Flutter"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -20,24 +19,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-    - assets/assets/images/
-    - assets/assets/fonts/
-
   fonts:
     - family: Quicksand
       fonts:
-        - asset: assets/assets/fonts/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand-Regular.ttf
           weight: 400
-        - asset: assets/assets/fonts/Quicksand-Medium.ttf
+        - asset: assets/fonts/Quicksand-Medium.ttf
           weight: 500
-        - asset: assets/assets/fonts/Quicksand-SemiBold.ttf
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
           weight: 600
-        - asset: assets/assets/fonts/Quicksand-Bold.ttf
-          weight: 700
-    - family: Flexo
-      fonts:
-        - asset: assets/assets/fonts/Flexo-Regular.ttf
-          weight: 400
-        - asset: assets/assets/fonts/Flexo-Bold.ttf
+        - asset: assets/fonts/Quicksand-Bold.ttf
           weight: 700

@@ -10,22 +10,22 @@ void main() {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  runApp(const YastaApp());
+  runApp(const YaloPagoApp());
 }
 
-class YastaApp extends StatelessWidget {
-  const YastaApp({super.key});
+class YaloPagoApp extends StatelessWidget {
+  const YaloPagoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Yasta',
+      title: 'YaloPago',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Flexo',
+        fontFamily: 'Quicksand',
         useMaterial3: true,
       ),
-      home: const LoginPinScreen(userPhone: '68763153'),
+      home: const LoginPinScreen(userPhone: '71234567'),
     );
   }
 }
